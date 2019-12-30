@@ -34,7 +34,48 @@ If there's more than one period, find the earliest::
 
 def most_active(bio_data):
     """Find window of time when most authors were active."""
+    start_dict = {}
+    end_dict = {}
+    # Brute force
+    for name, start, end in bio_data:
+        # Init
+        start_dict[start] = 0
+        end_dict[end] = 0
+    for key in start_dict:
+        # Count
+        for name, start, end in bio_data:
+            if start < key and end > key:
+                start_dict[key] = start_dict.get(key) + 1
+    for key in end_dict:
+        # Count
+        for name, start, end in bio_data:
+            if start < key and end > key:
+                end_dict[key] = end_dict.get(key) + 1
+    # Loop to get start
+    max = 0
+    start_period = 1999
+    for key in start_dict:
+        if start_dict[key] > max:
+            start_period = key
+            max = start_dict[key]
+        elif start_dict[key] == max:
+            if start_period > key:
+                start_period = key
+                max = start_dict[key]
+    end_period = 1999
+    for key in end_dict:
+        if key > start_period:
+            if end_dict[key] == max:
+                if key < end_period:
+                    end_period = key
+    time_period = (start_period, end_period)
+    return time_period
 
+
+# The optimal solution is to have a list of the each year in the century so
+# there does not have to be any double loop over n - this is technically O(n)
+# as well because each dict cannot have more than 100 keys but it is less
+# readable for sure
 
 if __name__ == "__main__":
     import doctest
