@@ -34,21 +34,35 @@ For six steps: 111111 21111 12111 11211 11121 11112 2211 2121 2112
     24
 """
 
+cache = {0: 1}
+
 
 def steps(n):
     """How many different ways can you climb a staircase of `n` steps?
 
     You can climb 1, 2, or 3 steps at a time.
     """
-    if n == 0:
-        return 1
-    if n < 0:
-        return 0
+    # # Standard
+    # if n == 0:
+    #     return 1
+    # if n < 0:
+    #     return 0
 
-    return steps(n-1) + steps(n-2) + steps(n-3)
+    # return steps(n-1) + steps(n-2) + steps(n-3)
+
+    # Memoization
+    if cache.get(n):
+        return cache[n]
+    else:
+        if n < 0:
+            return 0
+        result = steps(n - 1) + steps(n - 2) + steps(n - 3)
+        cache[n] = result
+        return result
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
+
     if doctest.testmod().failed == 0:
         print("\n*** ALL TEST PASSED! YOU'RE A STAIRMASTER!\n")
