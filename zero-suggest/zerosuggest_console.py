@@ -37,7 +37,6 @@ def viewed(docu_id):
     if not my_heap:
         return
     heapq.heappush(my_heap, (-document_id_to_name[docu_id][1], docu_id))
-    heapq.heapify(my_heap)
 
 
 def view_document(document_id):
@@ -57,7 +56,7 @@ def get_suggestions():
     # Add back in the nodes (ignoring those that were extra) - this is incase
     # suggestion is called again in the loop
     for item in output:
-        heapq.heappush(my_heap, (-item[2], item[1]))
+        my_heap.append((-item[2], item[1]))
         heapq.heapify(my_heap)
     return output
 
